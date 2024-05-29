@@ -32,7 +32,8 @@ class LoggingTest extends TestCase
      * ● https://laravel.com/api/9.x/Illuminate/Support/Facades/Log.html
      */
 
-    public function testLogging(){
+    public function testLogging()
+    {
 
         Log::info("Hello Info");
         Log::warning("Hello Warning");
@@ -51,7 +52,54 @@ class LoggingTest extends TestCase
          * [2024-05-29 14:07:30] testing.WARNING: Hello Warning
          * [2024-05-29 14:07:30] testing.ERROR: Hello Error
          * [2024-05-29 14:07:30] testing.CRITICAL: Hello Critical
- */
+         */
+
+    }
+
+
+    /**
+     * Context
+     * ● Kita tahu saat belajar di PHP Logging, di Monolog terdapat fitur bernama Context
+     * ● Itu juga bisa kita gunakan di Laravel Logging
+     * ● Log Facade memiliki parameter kedua setelah message yang bisa kita isi dengan data context, mirip
+     *   seperti yang kita lakukan ketika belajar PHP Logging menggunakan Monolog
+     */
+
+    public function testContext()
+    {
+        Log::info("Hello Context", ["user" => "budhi"]);
+
+        self::assertTrue(true);
+
+        /**
+         * result:
+         * [2024-05-29 15:58:24] testing.INFO: Hello Context {"user":"budhi"}
+         */
+
+    }
+
+    /**
+     * With Context
+     * ● Atau, kita bisa gunakan function withContext(), yang secara otomatis kode selanjutnya akan
+     *   menggunakan context yang kita gunakan dalam withContext()
+     * ● Ini sangat cocok ketika misal di Controller kita menambahkan withContext() berisi data user,
+     *   sehingga di kode-kode selanjutnya, setiap log akan berisikan informasi siapa user yang melakukan
+     *   proses logging tersebut
+     */
+
+    public function testWithContext()
+    {
+
+        Log::withContext(['user' => 'budhi']);
+
+        Log::info("Hello Info");
+
+        self::assertTrue(true);
+
+        /**
+         * result:
+         * [2024-05-29 15:59:14] testing.INFO: Hello Info {"user":"budhi"}
+         */
 
     }
 
