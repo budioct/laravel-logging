@@ -177,4 +177,36 @@ class LoggingTest extends TestCase
 
     }
 
+
+    /**
+     * Formatter
+     * ● Saat kita menggunakan driver monolog, secara default akan menggunakan LineFormatter
+     * ● Pada kasus tertentu, misal kita ingin bentuk log dibuat dalam bentuk JSON misalnya
+     * ● Di Laravel, untuk melakukan itu, kita bisa gunakan config formatter dengan berisi class Formatter
+     *   untuk monolog nya
+     */
+
+    public function testFileFormatterLog(){
+
+        $fileLogger = Log::channel("file"); // send to file channel
+
+        $fileLogger->info("Hello Info");
+        $fileLogger->warning("Hello Warning");
+        $fileLogger->error("Hello Error");
+        $fileLogger->critical("Hello Critical");
+
+        self::assertTrue(true);
+
+        /**
+         * result:
+         * secara default Logging di laravel menggunakan channel costume 'file'
+         * nanti hasil log akan di buatkan nama file laravel.log.. di directory ../storage/logs/application.log
+         *
+         * {"message":"Hello Info","context":{},"level":200,"level_name":"INFO","channel":"testing","datetime":"2024-05-29T16:17:45.384765+00:00","extra":{}}
+         * {"message":"Hello Warning","context":{},"level":300,"level_name":"WARNING","channel":"testing","datetime":"2024-05-29T16:17:45.386905+00:00","extra":{}}
+         * {"message":"Hello Error","context":{},"level":400,"level_name":"ERROR","channel":"testing","datetime":"2024-05-29T16:17:45.387050+00:00","extra":{}}
+         * {"message":"Hello Critical","context":{},"level":500,"level_name":"CRITICAL","channel":"testing","datetime":"2024-05-29T16:17:45.390212+00:00","extra":{}}
+         */
+    }
+
 }
