@@ -103,4 +103,35 @@ class LoggingTest extends TestCase
 
     }
 
+
+    /**
+     * Selected Channel
+     * ● Secara default, Laravel akan menggunakan logging channel DEFAULT yang sudah dipilih
+     * ● Namun, pada kasus tertentu, kita mungkin ingin membuat channel, tapi hanya digunakan ketika
+     *   kita mau gunakan
+     * ● Laravel juga memiliki fitur menseleksi channel yang ingin digunakan, sehingga sebelum kita kirim
+     *   data log, kita bisa pilih channel mana yang akan kita gunakan
+     * ● Kita bisa menggunakan method channel(string)
+     * ● Return dari method channel() adalah Logger, sehingga kita harus menggunakan Logger tersebut
+     *   untuk mengirim ke channel yang kita pilih
+     */
+
+    public function testChannel(){
+
+        $slacklogger = Log::channel("slack");
+        $slacklogger->error("Hello Error Slack"); // send to slack channel
+
+        Log::info("Hello Laravel"); // send to default channel
+
+        self::assertTrue(true);
+
+        /**
+         * result:
+         *
+         * [2024-05-29 16:05:52] laravel.ERROR: Hello Error Slack
+         *
+         * [2024-05-29 16:05:52] testing.INFO: Hello Laravel
+         */
+    }
+
 }
