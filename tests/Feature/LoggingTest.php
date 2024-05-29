@@ -45,7 +45,7 @@ class LoggingTest extends TestCase
         /**
          * result:
          * secara default Logging di laravel menggunakan channel 'stack'
-         * nanti hasil log akan di buatkan nama file laravel.log.. di directory ../storage/logs/laravel.logs
+         * nanti hasil log akan di buatkan nama file laravel.log.. di directory ../storage/logs/laravel.log
          *
          * file: laravel.log
          * [2024-05-29 14:07:30] testing.INFO: Hello Info
@@ -73,6 +73,9 @@ class LoggingTest extends TestCase
 
         /**
          * result:
+         * secara default Logging di laravel menggunakan channel 'stack'
+         * nanti hasil log akan di buatkan nama file laravel.log.. di directory ../storage/logs/laravel.log
+         *
          * [2024-05-29 15:58:24] testing.INFO: Hello Context {"user":"budhi"}
          */
 
@@ -98,6 +101,9 @@ class LoggingTest extends TestCase
 
         /**
          * result:
+         * secara default Logging di laravel menggunakan channel 'stack'
+         * nanti hasil log akan di buatkan nama file laravel.log.. di directory ../storage/logs/laravel.log
+         *
          * [2024-05-29 15:59:14] testing.INFO: Hello Info {"user":"budhi"}
          */
 
@@ -116,7 +122,8 @@ class LoggingTest extends TestCase
      *   untuk mengirim ke channel yang kita pilih
      */
 
-    public function testChannel(){
+    public function testChannel()
+    {
 
         $slacklogger = Log::channel("slack");
         $slacklogger->error("Hello Error Slack"); // send to slack channel
@@ -127,11 +134,47 @@ class LoggingTest extends TestCase
 
         /**
          * result:
+         *  secara default Logging di laravel menggunakan channel 'stack'
+         *  nanti hasil log akan di buatkan nama file laravel.log.. di directory ../storage/logs/laravel.log
          *
          * [2024-05-29 16:05:52] laravel.ERROR: Hello Error Slack
          *
          * [2024-05-29 16:05:52] testing.INFO: Hello Laravel
          */
+    }
+
+
+    /**
+     * Handler
+     * ● Saat menggunakan driver monolog, kita bisa menentukan attribute handler yang berisi class
+     *   Monolog Handler
+     * ● Contoh sebelumnya terdapat driver single untuk menyimpan data log ke file, sebenarnya jika kita
+     *   mau, kita bisa menggunakan driver monolog dan handler StreamHandler
+     */
+
+    public function testFileHandler()
+    {
+
+        $fileLogger = Log::channel("file"); // send to file channel
+
+        $fileLogger->info("Hello Info");
+        $fileLogger->warning("Hello Warning");
+        $fileLogger->error("Hello Error");
+        $fileLogger->critical("Hello Critical");
+
+        self::assertTrue(true);
+
+        /**
+         * result:
+         * secara default Logging di laravel menggunakan channel costume 'file'
+         * nanti hasil log akan di buatkan nama file laravel.log.. di directory ../storage/logs/application.log
+         *
+         * [2024-05-29 16:12:16] testing.INFO: Hello Info
+         * [2024-05-29 16:12:16] testing.WARNING: Hello Warning
+         * [2024-05-29 16:12:16] testing.ERROR: Hello Error
+         * [2024-05-29 16:12:16] testing.CRITICAL: Hello Critical
+         */
+
     }
 
 }
